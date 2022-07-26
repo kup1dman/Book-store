@@ -1,0 +1,7 @@
+﻿@model BookStore.Models.ViewModels.Cart.CartViewModel
+
+<div class="cart">
+    Your Cart: @Model.Quantity item(s) - @Model.Price $
+    <br />
+    @Html.ActionLink("Checkout", "Index")
+</div>

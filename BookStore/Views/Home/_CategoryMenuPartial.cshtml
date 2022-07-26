@@ -1,0 +1,20 @@
+﻿@model IEnumerable<BookStore.Models.ViewModels.Shop.CategoryViewModel>
+
+
+@foreach (var item in Model)
+{
+<div class="col-5">
+    @if (item.Name == "Books")
+    {
+        <a class="nav-link" href="/home/category/@item.Description.ToLower()">Книги</a>
+    }
+    @if (item.Name == "Office stuff")
+    {
+        <a class="nav-link" href="/home/category/@item.Description.ToLower()">Канцелярия</a>
+    }
+
+</div>
+
+}
+
+

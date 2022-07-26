@@ -1,0 +1,95 @@
+﻿@model IEnumerable<BookStore.Models.ViewModels.Shop.ProductViewModel>
+
+@{
+    ViewBag.Title = "Products";
+}
+
+<!--Директивы пакета PagedList, который был скачан из NuGet-->
+@using PagedList.Mvc;
+@using PagedList;
+
+<h2>Товары</h2>
+
+<select id="SelectCategory" name="SelectCategory">
+    <option value="0">Все</option>
+    @foreach (var item in ViewBag.Categories)
+    {
+        if (ViewBag.SelectedCategory == item.Value)
+        {
+            <option selected="Selected" value="@item.Value">@item.Text</option>
+        }
+        else
+        {
+            <option value="@item.Value">@item.Text</option>
+        }
+    }
+</select>
+<br />
+<br />
+
+<p>
+    @Html.ActionLink("Добавить новый товар", "AddProduct", "", new { @class = "btn btn-success" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Имя
+        </th>
+        <th>
+            Описание
+        </th>
+        <th>
+            Цена
+        </th>
+        <th>
+            Изображение
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var product in ViewBag.onePageOfProducts)
+    {
+        <tr>
+            <td>
+                @product.Name
+            </td>
+
+            <td>
+                @product.Description
+            </td>
+
+            <td>
+                @product.Price
+            </td>
+
+            <td>
+                <a href="/Admin/Shop/EditProduct/@product.Id">
+                    @if (@product.ImageName == null)
+                    {
+                        <img src="~/Source files/No_photo.jpg" width="200" height="200" />
+                    }
+                    else
+                    {
+                        <img src="~/Images/Uploads/Products/@product.Id/Thumbs/@product.ImageName" />
+                    }
+                </a>
+            </td>
+
+            <td>
+                @Html.ActionLink("Изменить", "EditProduct", new { id = product.Id }, new { @class = "btn btn-info" }) |
+                @Html.ActionLink("Удалить", "DeleteProduct", new { id = product.Id }, new { @class = "delete btn btn-danger" })
+            </td>
+        </tr>
+    }
+</table>
+
+<!--HTML хелпер из Nuget пакета PagedList-->
+@Html.PagedListPager((IPagedList)ViewBag.onePageOfProducts, page => Url.Action("Products", new { page, categoryId = ViewBag.SelectedCategory }))
+
+
+@section Scripts
+{
+    
+    <!--Подключаем JS скрипт (с использованием JQuery) при просмотре продуктов-->
+    <script src="~/Scripts/customScripts/ProductScript.js"></script>
+}

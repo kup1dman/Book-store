@@ -1,0 +1,139 @@
+﻿.prod-container {
+    display: grid;
+    grid-column-gap: 1.5rem;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-row-gap: 2rem;
+    padding-bottom: 3%;
+}
+
+.title-category {
+    position: relative;
+    text-align: start;
+    padding: 3% 0% 3% 4%;
+    color: #e68a3e;
+    bottom: 50px;
+    background: rgba(225,225,227, .3);
+}
+
+.prod-item {
+    display: grid;
+    align-items: center;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto 1fr auto;
+}
+
+.cover-wraper {
+    grid-row: span 1 / span 1;
+    position: relative;
+    width: 100%;
+}
+
+.cover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.prod-img {
+    border: 10px solid rgba(225,225,227, .3);
+    border-radius: 7px;
+    background: rgba(225,225,227, .3);
+    display: block;
+    position: relative;
+}
+
+.img {
+    width: 100%;
+    border-radius: 3px;
+}
+
+
+.name {
+    padding-top: 10%;
+    padding-left: 7%;
+}
+
+.description {
+    padding-left: 7%;
+    font-size: 15px;
+    font-weight: 200;
+}
+
+.prod-price {
+    padding-bottom: 10%;
+    padding-left: 7%;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.prod-link {
+    width: 100%;
+    border: none;
+    border-radius: 20px;
+    background: #c73f00;
+    color: white;
+}
+
+.prod-link-icon{
+    filter: invert();
+}
+
+.prod-link:hover {
+    box-shadow: 0 0 0 0.25rem rgb(199 63 0 / 25%);
+    background: #B33900;
+}
+
+.prod-link:focus {
+    box-shadow: 0 0 0 0.25rem rgb(199 63 0 / 25%);
+}
+
+/*.prod-link-clicked {
+    width: 100%;
+    border: 1px solid #c73f00;
+    background-color: transparent;
+    border-radius: 20px;
+    color: #c73f00;
+}
+
+    .prod-link-clicked:hover {
+        width: 100%;
+        border: 1px solid #c73f00;
+        background-color: transparent;
+        border-radius: 20px;
+        color: #c73f00;
+        background-color: transparent;
+        box-shadow: 0 0 0 0.25rem rgb(199 63 0 / 25%);
+    }*/
+
+.ui-dialog-buttonpane button {
+    width: 100%;
+    border: none;
+    background: #c73f00;
+    color: white;
+    border-radius: 20px;
+}
+
+#btn-keep-shop {
+    width: 100%;
+    border: 1px solid #c73f00;
+    background-color: transparent;
+    border-radius: 20px;
+    color: #c73f00;
+}
+
+.ui-dialog-buttonpane button:hover {
+    border: none;
+    color: white;
+    background: #c73f00;
+    box-shadow: 0 0 0 0.25rem rgb(199 63 0 / 25%);
+}
+
+.ui-dialog .ui-dialog-buttonpane{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.ui-widget.ui-widget-content {
+    font-size: 20px;
+}

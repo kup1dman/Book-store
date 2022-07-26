@@ -1,0 +1,61 @@
+﻿.nav-link {
+    color: black;
+}
+
+    .nav-link:hover {
+        color: black;
+    }
+
+.navbar-brand {
+    color: black;
+}
+
+    .navbar-brand:hover {
+        color: black;
+    }
+
+.body-content {
+    padding: 10% 0% 2% 0%;
+}
+
+.btn-outline-success {
+    color: #356fb3;
+    border-color: #356fb3;
+}
+
+    .btn-outline-success:hover {
+        border-color: #356fb3;
+        background: #356fb3;
+    }
+
+    .btn-outline-success:active {
+        border-color: #356fb3;
+        background: #356fb3;
+        box-shadow: 0 0 0 0.25rem rgb(73 125 186 / 25%);
+    }
+
+    .btn-outline-success:focus {
+        border-color: #356fb3;
+        box-shadow: 0 0 0 0.25rem rgb(73 125 186 / 25%);
+    }
+
+.form-control:focus {
+    border-color: #356fb3;
+    box-shadow: 0 0 0 0.25rem rgb(73 125 186 / 25%);
+}
+
+.nav-tabs {
+    border-bottom: 1px solid #e68a3e;
+}
+
+
+
+    .nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
+        border-color: #e68a3e #e68a3e white #e68a3e;
+        isolation: isolate;
+    }
+
+.btn:hover {
+    color: white;
+}
+

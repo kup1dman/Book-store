@@ -1,0 +1,84 @@
+﻿@model IEnumerable<BookStore.Models.ViewModels.Cart.CartViewModel>
+
+<link href="~/Content/customStyles/CartStyle.css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Cart Details";
+}
+
+<h2 class="cart-title">Корзина</h2>
+
+@if (ViewBag.Message != null)
+{
+    <h3>@ViewBag.Message</h3>
+}
+else
+{
+    <div class="row justify-content-center cart-container">
+        <div class="col-9">
+            <table class="table">
+                <tr>
+                    <th>Товар</th>
+
+                    <th>Количество</th>
+
+                    <th>Цена</th>
+
+                    <th></th>
+
+                    <th>Итого</th>
+                </tr>
+
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="col-4">
+                            <img src="/Images/Uploads/Products/@item.ProductId/Thumbs/@item.Image" class="grow" />
+                            
+                            <div class="prod-cart-name">@Html.DisplayFor(modelItem => item.ProductName)</div>
+                        </td>
+
+                        <td class="quantity@(item.ProductId) col-1">
+                            <span>@Html.DisplayFor(modelItem => item.Quantity)</span>
+                        </td>
+
+                        <td class="col-2">
+                            @Html.DisplayFor(modelItem => item.Price) руб.
+                        </td>
+
+                        <td class="col-2">
+                            <div class="row">
+                                <a class="incproduct btn" data-id="@item.ProductId">+</a>
+                                <a class="decproduct btn" data-id="@item.ProductId">-</a>
+                                <a class="removeproduct btn" data-id="@item.ProductId"><img src="~/Source files/delete-btn.png" class="remove-img"/></a>
+                            </div>
+                           
+                        </td>
+
+                        <td class="total@(item.ProductId) col-2">
+                            @Html.DisplayFor(modelItem => item.Total) руб.
+                        </td>
+
+                    </tr>
+                }
+
+
+                <tr>
+                    <td class="grandtotal"><b>Общее количество: </b> <span>@ViewBag.GrandTotal</span> руб.</td>
+                    <td><a href ="/Cart/Checkout" class="prod-link btn grow"><span class="text-inline">Оплатить</span></a></td>
+                </tr>
+
+            </table>
+        </div>
+        
+    </div>
+
+
+
+}
+
+@section Scripts
+{
+    <script src="~/Scripts/customScripts/EditAmountProductScript.js"></script>
+}

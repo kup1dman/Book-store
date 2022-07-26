@@ -1,0 +1,14 @@
+﻿@model IEnumerable<BookStore.Models.ViewModels.Shop.ProductViewModel>
+
+
+@foreach (var item in Model)
+{
+
+    <div class="slider-item-@item.CategoryName.ToLower().Replace(" ", "")">
+        <a href="/Home/product-details/@item.Slug" style="text-decoration: none">
+            <img class="slider-image grow" src="/Images/Uploads/Products/@item.Id/Thumbs/@item.ImageName">
+        </a>
+
+    </div>
+
+}

@@ -1,0 +1,185 @@
+﻿@model BookStore.Models.ViewModels.Shop.ProductViewModel
+
+
+<link href="~/Scripts/dropzone/basic.css" rel="stylesheet" />
+<link href="~/Scripts/dropzone/dropzone.css" rel="stylesheet" />
+
+<!--СТИЛИ ДЛЯ ДРОПЗОНЫ-->
+<link href="~/Content/customStyles/dropzoneFilesStyle.css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Изменить товар";
+}
+
+<h2>Редактирование товара</h2>
+
+@if (TempData["SuccessfulMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessfulMessage"]
+    </div>
+}
+
+<!--В строке ниже мы передаем дополнительные параметры, чтобы можно было добавлять картинки-->
+<!--new { enctype = "multipart/form-data" } говорит о том что можно добавлять не только текст но еще и другие данные (картинки в нашем случае)-->
+
+@using (Html.BeginForm("EditProduct", "Shop", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.CategoryId, Model.Categories, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ImageName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ImageName, new { htmlAttributes = new { @class = "form-control" } })
+                @if (Model.ImageName != null)
+                {
+                    <img src="~/Images/Uploads/Products/@Model.Id/Thumbs/@Model.ImageName" />
+
+                }
+
+                <br />Новое изображение<br />
+                <img id="imgPreview" src="~/Source files/No_photo.jpg" width="200" />
+
+
+                <div class="col-md-10">
+                    <input type="file" name="file" id="imageUpload" />
+                </div>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Изменить" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+<hr />
+@if (!Model.GalleryImages.Any())
+{
+    <h3>Нет изображений с галерей для этого продукта</h3>
+}
+
+<form action="~/Admin/Shop/SaveGalleryImages" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
+    <div class="fallback">
+        <input type="file" name="file" multiple="" />
+        <input type="submit" value="Upload" />
+    </div>
+</form>
+
+<br />
+<br />
+
+<div class="row">
+
+    @foreach (var image in Model.GalleryImages)
+    {
+        <div class="col">
+            <div class="galleryStyle">
+
+                <div style="width: 200px; height: 200px;">
+                    <img src="~/Images/Uploads/Products/@Model.Id/Gallery/Thumbs/@image" />
+                </div>
+
+                <div style="text-align: center;">
+                    @Html.ActionLink("Удалить", "DeleteImage", "Shop", new { @class = "deleteimage btn btn-danger", data_name = image, style = "margin: 10px" })
+                </div>
+
+            </div>
+        </div>
+    }
+
+</div>
+
+
+@section Scripts
+{
+    <script src="~/Scripts/customScripts/AddProductScript.js"></script>
+
+    <script src="~/Scripts/dropzone/dropzone.js"></script>
+
+    <script>
+        // К сожалению скрипт не работает в отдельном файле, т.к. нужен Model.Id
+        /* Отображение дропзоны */
+
+        Dropzone.options.dropzoneForm = {
+            acceptedFiles: "image/*",
+            init: function () {
+                this.on("complete",
+                function (file) {
+                    if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+                        location.reload();
+                        }
+                });
+
+                this.on("sending",
+                function (file, xhr, formData) {
+                    formData.append("id",  @Model.Id);
+                });
+            }
+        };
+
+    /*-----------------------------------------------------------*/
+
+    /* Удаление изображений с дропзоны */
+
+        $("a.deleteimage").click(function(e) {
+            e.preventDefault();
+
+            if (!confirm("Подтверждение удаление изображения")) return false;
+
+            var $this = $(this);
+            var url = "/admin/shop/DeleteImage";
+            var imageName = $this.data("name");
+
+
+            $.post(url, { id: @Model.Id, imageName: imageName }, function (data) {
+                $this.parent().parent().parent().fadeOut("slow");
+            });
+        });
+
+
+        /*-----------------------------------------------------------*/
+
+    </script>
+
+}

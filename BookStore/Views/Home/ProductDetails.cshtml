@@ -1,0 +1,140 @@
+﻿@model BookStore.Models.ViewModels.Shop.ProductViewModel
+
+@{
+    ViewBag.Title = Model.Name;
+}
+
+@Styles.Render("/Content/customStyles/ProductDetailsStyle.css")
+
+
+<div class="row justify-content-center product-container">
+
+    <!--Подключение классов в div для адаптива к разным разрешениям (либо убрать потом либо добавить везде) col-sm-12 col-md-5-->
+
+    <div class="col">
+        <div class="row justify-content-end">
+            <img class="prod-details-img" src="/Images/Uploads/Products/@Model.Id/@Model.ImageName" />
+        </div>
+        
+    </div>
+
+    <div class="col">
+        <div class="description">
+            <div class="col">
+                <h3>@Model.Name</h3>
+            </div>
+            <div class="col">
+                @Html.DisplayFor(model => model.Description)
+            </div>
+            <div class="col">
+                <b class="price">@Html.DisplayFor(model => model.Price) руб.</b>
+            </div>
+        </div>
+
+        @if (Request.IsAuthenticated)
+        {
+            <div class="addtocart">
+
+                <a href="#" class="addtocart btn prod-btn ">В корзину</a>
+
+                <span class="loader">
+                    <img src="~/Source files/loading.gif" height="80" width="80" />
+                </span>
+
+                <div class="message">
+                    Продукт добавлен в корзину
+                </div>
+
+            </div>
+        }
+        else
+        {
+            <a href="#" class="addtocartUnauthorized btn prod-btn ">В корзину</a>
+            <div class="message">
+                Нужна авторизация
+            </div>
+        }
+
+
+
+    </div>
+
+</div>
+
+<hr />
+
+<div class="row">
+
+    <div class="col-sm-12 fancyboxdiv">
+
+        <br /><br />
+
+        <div class="row">
+            @foreach (var item in Model.GalleryImages)
+            {
+                <div class="col">
+                    <a class="fancybox" rel="gallery1" href="/Images/Uploads/Products/@Model.Id/Gallery/@item">
+                        <img src="/Images/Uploads/Products/@Model.Id/Gallery/Thumbs/@item" />
+                    </a>
+                </div>
+            }
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <link href="~/Content/jquery.fancybox.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery.fancybox.js"></script>
+    <script src="~/Scripts/customScripts/ProductDetailsScript.js"></script>
+
+    <script>
+     /********************ДОБАВИТЬ В КОРЗИНУ*********************/
+        $(function () {
+            $("a.addtocart").click(function (e) {
+                e.preventDefault();
+
+                $("span.loader").addClass("ib");
+
+                var url = "/cart/AddToCartPartial";
+
+                $.get(url, { id: @Model.Id
+                }, function myfunction(data) {
+                    $(".cart").html(data);
+                }).done(function () {
+                    $("span.loader").removeClass("ib");
+                    $("div.message").addClass("ib");
+
+                    setTimeout(function () {
+                        $("div.message").fadeOut("fast");
+                        $("div.message").removeClass("ib");
+                    }, 2000);
+                });
+            });
+        });
+
+        $(function () {
+            $("a.addtocartUnauthorized").click(function (e) {
+                e.preventDefault();
+
+                $("span.loader").addClass("ib");
+
+                $.get({ id: @Model.Id}, function myfunction(data) {
+                    $(".cart").html(data);
+                   
+                }).done(function () {
+                    $("span.loader").removeClass("ib");
+                    $("div.message").addClass("ib");
+
+                    setTimeout(function () {
+                        $("div.message").fadeOut("fast");
+                        $("div.message").removeClass("ib");
+                    }, 2000);
+                });
+            });
+        });
+     /****************************************************/
+    </script>
+}

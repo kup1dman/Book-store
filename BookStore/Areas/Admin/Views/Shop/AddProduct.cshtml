@@ -1,0 +1,82 @@
+﻿@model BookStore.Models.ViewModels.Shop.ProductViewModel
+
+@{
+    ViewBag.Title = "Add Product";
+}
+
+<h2>Добавление товара</h2>
+
+@if (TempData["SuccessfulMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessfulMessage"]
+    </div>
+}
+
+<!--В строке ниже мы передаем дополнительные параметры, чтобы можно было добавлять картинки-->
+<!--new { enctype = "multipart/form-data" } говорит о том что можно добавлять не только текст но еще и другие данные (картинки в нашем случае)-->
+
+@using (Html.BeginForm("AddProduct", "Shop", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <!--SELECT CATEGORY НА АНГЛИЙСКОМ-->
+                @Html.DropDownListFor(model => model.CategoryId, Model.Categories, "Выбрать категорию", new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <!--НА АНГЛИЙСКОМ-->
+            <label class="control-label col-md-2">Изображение</label>
+            <div class="col-md-10">
+                <input type="file" name="file" id="imageUpload" />
+                <img id="imgPreview" src="~/Source files/No_photo.jpg" width="200" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Добавить" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts
+{
+    <!--Подключаем JS скрипт (с использованием JQuery) при добавлении продукта-->
+    <script src="~/Scripts/customScripts/AddProductScript.js"></script>
+}
+
+

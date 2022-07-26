@@ -1,0 +1,45 @@
+﻿.wraper {
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 7px;
+}
+
+.thanks-title{
+   padding-top: 2%;
+   padding-bottom: 2%;
+   text-align:center;
+}
+
+.total-wraper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 100px;
+    padding-left: 2%;
+    padding-bottom: 2%;
+}
+
+.total {
+    font-size: 19px;
+    
+}
+
+.prod-link {
+    width: 20%;
+    border: none;
+    border-radius: 20px;
+    background: #c73f00;
+    color: white;
+}
+
+.prod-link:hover {
+    box-shadow: 0 0 0 0.25rem rgb(199 63 0 / 25%);
+    background: #B33900;
+}
+
+.prod-link:focus {
+    box-shadow: 0 0 0 0.25rem rgb(199 63 0 / 25%);
+}
+
+
+
+

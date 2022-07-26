@@ -1,0 +1,202 @@
+﻿@model IEnumerable<BookStore.Models.ViewModels.Shop.ProductViewModel>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@Scripts.Render("~/Scripts/customScripts/SliderScriptBooks.js")
+@Scripts.Render("~/Scripts/customScripts/SliderScriptOffice.js")
+@Scripts.Render("~/Scripts/customScripts/SliderScriptAd.js")
+
+
+@Styles.Render("~/Content/customStyles/SliderStyle.css")
+@Styles.Render("~/Content/customStyles/IndexStyle.css")
+@Styles.Render("~/Content/customStyles/SliderAdStyle.css")
+
+@if (TempData["SuccessfulMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessfulMessage"]
+    </div>
+}
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // инициализация слайдера
+        new ItcSimpleSlider('.itcss', {
+            loop: true,
+            autoplay: true,
+            interval: 4000,
+            swipe: true,
+        });
+    });
+</script>
+
+<div>
+    <div class="itcss">
+        <div class="itcss__wrapper">
+            <div class="itcss__items">
+                <div class="itcss__item">
+                    <img src="~/Source files/slider-ad-image1.png" class="ad-slider-img" />
+                </div>
+                <div class="itcss__item">
+                    <img src="~/Source files/slider-ad-image2.png" class="ad-slider-img" />
+                </div>
+                <div class="itcss__item">
+                    <img src="~/Source files/slider-ad-image3.png" class="ad-slider-img" />
+                </div>
+            </div>
+        </div>
+        <!-- Стрелки для перехода к предыдущему и следующему слайду -->
+        <a class="itcss__control itcss__control_prev" href="#" role="button" data-slide="prev"></a>
+        <a class="itcss__control itcss__control_next" href="#" role="button" data-slide="next"></a>
+    </div>
+</div>
+
+
+
+<div class="row justify-content-center align-items-center">
+    <div class="col-2">
+        <div class="row justify-content-end">
+            <div class="col-3">
+                <img src="~/Source files/book-stack-slider-img.png" width="50" />
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col">
+        <div class="row justify-content-start">
+            <div class="col-10">
+                <h2 class="title"><b>Бестселлеры Книги</b></h2>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col">
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <a href="/home/category/books" class="btn more-link grow">СМОТРЕТЬ ДАЛЕЕ</a>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<div class="slider">
+
+    <img src="~/Source files/btn-img-prev.png" class="btn-prev-book" />
+
+    <div class="wraper">
+
+        <div class="slider-container">
+
+            <div class="slider-track-books">
+
+                @Html.Action("ProductCarouselPartial", "Home", new { name = "books" })
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <img src="~/Source files/btn-img-next.png" class="btn-next-book" />
+
+</div>
+
+
+
+<div class="row justify-content-center align-items-center">
+    <div class="col-2">
+        <div class="row justify-content-end">
+            <div class="col-3">
+                <img src="~/Source files/documents-slider-img.png" width="50" />
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col">
+        <div class="row justify-content-start">
+            <div class="col-11">
+                <h2 class="title"><b>Бестселлеры Канцелярия</b></h2>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col">
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <a href="/home/category/office-stuff" class="btn more-link grow">СМОТРЕТЬ ДАЛЕЕ</a>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<div class="slider">
+
+    <img src="~/Source files/btn-img-prev.png" class="btn-prev-officestuff" />
+
+    <div class="wraper">
+
+        <div class="slider-container">
+
+            <div class="slider-track-officestuff">
+
+                @Html.Action("ProductCarouselPartial", "Home", new { name = "office-stuff" })
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <img src="~/Source files/btn-img-next.png" class="btn-next-officestuff" />
+
+</div>
+
+<div class="email-distirbution">
+    <img src="~/Source files/email-letter-img.png" id="email-image"/>
+    <div class="email-distirbution-info">
+        <span >Узнавайте первыми обо всех новинках и распродажах.<br /> Получайте персональные предложения.</span><br />
+        <div>
+            <input type ="text" id="email-input" placeholder="E-mail" />
+            <a class ="btn" id="email-input-btn" onclick="sendEmail()">Подписаться</a>
+        </div>
+        
+    </div>
+   
+</div>
+
+
+@section Scripts
+{
+    <script>
+
+        var sendEmail = function () {
+            var email = $("#email-input").val();
+            var url = "/Home/SendMailToUser";
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: jQuery.param({ name: email }),
+                success: function (data) {
+                    alert("Вы подписались! Спасибо!");
+                    $("#email-input").val("");
+                }
+            })
+            
+        }
+
+    </script>
+}
+
+

@@ -1,0 +1,52 @@
+﻿@model IEnumerable<BookStore.Models.ViewModels.Cart.CartViewModel>
+
+<link href="~/Content/customStyles/CheckoutStyle.css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Checkout";
+}
+
+<div class="wraper">
+
+    <h3 class="thanks-title">Спасибо за покупку!</h3>
+
+    <table class="table">
+        <tr class="table-title">
+            <th>Товар</th>
+
+            <th>Количество</th>
+
+            <th>Цена</th>
+
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="col-4">
+                    <img src="/Images/Uploads/Products/@item.ProductId/Thumbs/@item.Image" class="grow" />
+
+
+                </td>
+
+                <td class="col-1">
+                    <span>@Html.DisplayFor(modelItem => item.Quantity)</span>
+                </td>
+
+                <td class="col-2">
+                    @Html.DisplayFor(modelItem => item.Total) руб.
+                </td>
+
+            </tr>
+
+        }
+    </table>
+
+    <div class="total-wraper">
+        <div class="total"><b>Общее количество: </b><span>@ViewBag.GrandTotal</span> руб.</div>
+        <a href="/home" class="btn prod-link grow">Закрыть</a>
+    </div>
+    
+
+</div>
+       

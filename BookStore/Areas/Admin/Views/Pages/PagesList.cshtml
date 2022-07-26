@@ -1,0 +1,79 @@
+﻿@model IEnumerable<BookStore.Models.ViewModels.Pages.PageViewModel>
+
+@{
+    ViewBag.Title = "PagesList";
+}
+
+<h2>Страницы</h2>
+
+@if (TempData["SuccessfulMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessfulMessage"]
+    </div>
+}
+
+<p>
+    @Html.ActionLink("Добавить новую страницу", "AddPage", "", new { @class = "btn btn-success" })
+</p>
+
+@if (!Model.Any())
+{
+    <h1 class="text-center">Не существует ни одной страницы</h1>
+}
+else
+{
+    <table class="table sorting" id="pages">
+        <tr class="home">
+            <th>
+                Заголовок
+            </th>
+            <th>
+                Описание
+            </th>
+            <th>
+                Имеет sidebar
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <!--Делаем ебанутый ползунок для перетаскивания элементов через jquery-->
+            <tr id="id_@item.Id" class="@item.Description">
+                <td>
+                    @if (item.Description != "home")
+                    {
+                        <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                    }
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HasSidebar)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "EditPage", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "PageDetails", new { id = item.Id })
+                    <!--Если Description равен home, не показывать кнопку Delete-->
+                    @if (item.Description != "home")
+                    {
+                        string verticalStick = "| ";
+                        @verticalStick;
+                        @Html.ActionLink("Delete", "DeletePage", new { id = item.Id }, new { @class = "delete" })
+                    }
+
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+@section Scripts
+{
+    <!--Подключаем JS скрипт (с использованием JQuery) для всяческих внешних штучек при изменении страниц-->
+    <script src="~/Scripts/customScripts/PageScript.js"></script>
+}

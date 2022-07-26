@@ -1,0 +1,64 @@
+﻿    <!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="@Url.Content("~/Scripts/jquery-3.6.0.min.js")" type="text/javascript"></script>
+    <title>@ViewBag.Title - BookStore Admin Area</title>
+
+    <!--CSS files-->
+    @Styles.Render("~/Content/css")
+    <link href="~/Content/customStyles/AdminStyle.css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+    <!--NavBar-->
+    <header>
+        <nav class="navbar navbar-light bg-light pt-2 fixed-top">
+
+            <a class="navbar-brand" href="/Admin/Dashboard/Index">
+                <img src="~/Source files/bookStoreLogo.svg" alt="" width="40" class="d-inline-block align-text-top">
+                BookStore Dashboard
+            </a>
+
+            <ul class="nav justify-content-end">
+
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/Home">Выйти</a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+    </header>
+
+    <!--Main Body-->
+    <div class="container body-content">
+
+        @RenderBody()
+        <hr />
+        
+
+    </div>
+
+    <!--JS scripts-->
+   
+    @Scripts.Render("~/bundles/modernizr")
+
+    @Scripts.Render("~/bundles/bootstrap.js")
+
+    <!--Подключаем бандл JQueryUI -->
+    @Scripts.Render("~/bundles/jqueryui")
+
+    <!--Подключаем бандл CKEditor для того чтобы появился крутой редактор текста-->
+    @Scripts.Render("~/bundles/ckeditor")
+
+    @RenderSection("scripts", required: false)
+
+</body>
+
+</html>

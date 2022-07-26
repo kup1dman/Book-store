@@ -1,0 +1,186 @@
+﻿@model IEnumerable<BookStore.Models.ViewModels.Shop.ProductViewModel>
+
+@{
+    ViewBag.Title = "Search";
+}
+
+@Styles.Render("~/Content/customStyles/CategoryStyle.css")
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<style>
+    .title-search {
+        text-align: start;
+        padding: 3% 0 3% 0;
+    }
+</style>
+
+<h2 class="title-search">Результаты поиска по "@ViewBag.InputText"</h2>
+
+@if (!Model.Any())
+{
+    <h3 class="text-center">Совпадений не найдено</h3>
+}
+else
+{
+    <div class="prod-container">
+        @foreach (var item in Model)
+        {
+            <div class="prod-item">
+
+                <div class="cover-wraper">
+                    <a class="cover" href="/home/product-details/@item.Slug">
+                        <div class="prod-img">
+                            <img src="/Images/Uploads/Products/@item.Id/Thumbs/@item.ImageName" class="img grow" />
+                        </div>
+                    </a>
+                </div>
+
+                <div class="name">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </div>
+
+                <div class="description">
+                    @Html.DisplayFor(modelItem => item.Description)
+
+                </div>
+
+                <div class="prod-price">
+                    @Html.DisplayFor(modelItem => item.Price) руб.
+                </div>
+
+                @if (Request.IsAuthenticated)
+                {
+                    <div class="prod-btn">
+                        <a data-id="@item.Id" id="@item" class="btn prod-link grow">
+                            <div class="row">
+                                <div class="col">
+                                    <img src="~/Source files/cart-mainMenu.svg" class="prod-link-icon" width="20" height="20" />
+                                    В корзину
+                                </div>
+
+                            </div>
+
+                        </a>
+                    </div>
+                }
+                @if (!Request.IsAuthenticated)
+                {
+                    <div>
+                        <a data-id="@item.CategoryName.ToLower().Replace(" ", "-")" id="@item" class="btn prod-link unauthorized grow">
+                            <div class="row">
+                                <div class="col">
+                                    <img src="~/Source files/cart-mainMenu.svg" class="prod-link-icon" width="20" height="20" />
+                                    В корзину
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+
+
+            </div>
+
+        }
+    </div>
+
+    <div id="dialog-confirm" title="Продукт добавлен в корзину">
+
+    </div>
+
+    <div id="dialog-authorize" title="Нужна авторизация">
+
+    </div>
+}
+
+@section Scripts
+{
+    <script>
+
+        $(function () {
+            $.ui.dialog.prototype._focusTabbable = function () { };
+
+            $("#dialog-confirm").dialog({
+                draggable: false,
+                autoOpen: false,
+                resizable: false,
+                height: "auto",
+                width: 400,
+                modal: true,
+                buttons: [
+                    {
+                        text: "Продолжить",
+                        id: "btn-keep-shop",
+                        click: function () {
+                            $(this).dialog("close");
+                        }
+                    },
+
+                    {
+                        text: "В корзину",
+                        click: function () {
+                            window.location.replace("/Cart/Index");
+                        }
+                    }
+                ]
+
+            });
+
+            $(".prod-link").on("click", function () {
+
+                /*$(this).addClass('prod-link-clicked');*/
+
+                var $this = $(this);
+                var productId = $(this).data("id");
+                var url = "/cart/AddToCartPartial/" + productId;
+
+                $.get(url, function (data) {
+                    $("#dialog-confirm").dialog("open");
+                });
+            });
+        });
+
+        $(function () {
+            $.ui.dialog.prototype._focusTabbable = function () { };
+
+            $("#dialog-authorize").dialog({
+                draggable: false,
+                autoOpen: false,
+                resizable: false,
+                height: "auto",
+                width: 400,
+                modal: true,
+                buttons: [
+                    {
+                        text: "Войти",
+                        id: "btn-keep-shop",
+                        click: function () {
+                            window.location.replace("/Account/Login");
+                        }
+                    },
+
+                    {
+                        text: "Регистрация",
+                        click: function () {
+                            window.location.replace("/Account/create-account");
+                        }
+                    }
+                ]
+
+            });
+
+            $(".unauthorized").on("click", function () {
+
+                /*$(this).addClass('prod-link-clicked');*/
+                var $this = $(this);
+                var productName = $(this).data("id");
+                var url = "/home/Category/" + productName;
+
+                $.get(url, function (data) {
+                    $("#dialog-authorize").dialog("open");
+                });
+            });
+        });
+    </script>
+}
+
+
